@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.models.js";
 import {
-  registerSchema,
+  registerUserSchema,
   loginSchema,
   editUserSchema,
 } from "../validation/schemas.js";
@@ -13,23 +13,17 @@ import { uploadOnCloudinary } from "../utils/cloudinary.utils.js";
 
 //? Get all users
 const getUsers = async (req, res) => {
-  const { city, country } = req.query;
+  const { name, email, role, department } = req.query;
   const matchStage = {};
 
-  //* Only allow admin to access all queries
-  // if (req.user.role === "admin") {
-  // if (role) matchStage.role = role;
-  if (city) matchStage.city = city;
-  if (country) matchStage.country = country;
-  // } else {
-  //* Allow city manager to only access data of his city's branch managers
-  // matchStage.role = "branch manager";
-  // matchStage.city = req.user.city;
-  // }
+  if (name) matchStage.name = name;
+  if (email) matchStage.email = email;
+  if (role) matchStage.role = role;
+  if (department) matchStage.department = department;
 
   const users = await userModel.aggregate([{ $match: matchStage }]);
 
-  if (!users.length === 0)
+  if (users.length === 0)
     return sendResponse(res, 404, null, false, "No users found.");
 
   //* Return success response with all users data
@@ -63,7 +57,7 @@ const getTokenUser = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     //* Validate the request data using Joi schema
-    const { error, value } = registerSchema.validate(req.body);
+    const { error, value } = registerUserSchema.validate(req.body);
 
     //* If validation fails, return an error response
     if (error) return sendResponse(res, 400, null, false, error.message);
@@ -81,22 +75,14 @@ const registerUser = async (req, res) => {
         "User with this email already exists."
       );
 
-    // //* Check if city manager is trying to add an admin or city manager, return an error response
-    // if (
-    //   req.user.role === "city manager" &&
-    //   value.role.toLowerCase() !== "user manager"
-    // ) {
-    //   return sendResponse(res, 403, null, false, "Access denied.");
-    // }
-
     //* Hash the password before saving to the database using bcrypt
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(value.password, saltRounds);
     value.password = hashedPassword;
 
     //* Upload the profile image to cloudinary
-    const profileImgUrl = await uploadOnCloudinary(req.file.path);
-    value.profileImg = profileImgUrl.url;
+    const uploadedImage = await uploadOnCloudinary(req.file.path);
+    value.image = uploadedImage.url;
 
     //* Save the new user to the database
     let newUser = new userModel({ ...value });
@@ -168,7 +154,7 @@ const editUser = async (req, res) => {
   if (error) return sendResponse(res, 400, null, false, error.message);
 
   //* Check if user exists in db
-  const userExists = userModel.findById(id);
+  const userExists = await userModel.findById(id);
 
   //* If user does not exist in db, return an error response
   if (!userExists)
@@ -178,10 +164,10 @@ const editUser = async (req, res) => {
   const updatedUserObj = { ...value };
 
   //* If image is provided, then upload it on cloudinary
-  let imageUrl;
+  let uploadedImage;
   if (req.file) {
-    imageUrl = await uploadOnCloudinary(req.file.path);
-    updatedUserObj.profileImg = imageUrl.url;
+    uploadedImage = await uploadOnCloudinary(req.file.path);
+    updatedUserObj.image = uploadedImage.url;
   }
 
   //* Update the user and only replace the fields provided
@@ -204,6 +190,7 @@ const editUser = async (req, res) => {
 //? Delete an existing user
 const deleteUser = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
 
   //* Check if user exists in db
   const userExists = await userModel.findById(id);
@@ -211,11 +198,6 @@ const deleteUser = async (req, res) => {
   //* If user does not exist in db, return an error response
   if (!userExists)
     return sendResponse(res, 404, null, false, "User not found.");
-
-  // //* Restrict city manager to access data of any meal rather than meals served in his city
-  // if (req.user.role === "city manager" && userExists.city !== req.user.city) {
-  //   return sendResponse(res, 403, null, false, "Access denied.");
-  // }
 
   //* Delete the user from db and return the deleted user in response
   const deletedUser = await userModel.findByIdAndDelete(id);

@@ -3,18 +3,33 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 const userSchema = new Schema(
   {
-    fullname: { type: String, required: true, index: true },
-    email: { type: String, required: true, unique: true, lowercase: true },
+    name: { type: String, required: true, index: true, lowercase: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      lowercase: true,
+    },
+    image: { type: String, required: true },
     password: { type: String, required: true },
-    profileImg: { type: String, required: true },
-    city: { type: String, lowercase: true },
-    country: { type: String, lowercase: true },
+    role: {
+      type: String,
+      enum: ["admin", "receptionist", "staff"],
+      lowercase: true,
+      required: true,
+    },
+    department: {
+      type: String,
+      enum: [
+        "health",
+        "education",
+        "food assistance",
+        "general support",
+        "employement",
+      ],
+    },
   },
-  // role: {
-  //   type: String,
-  //   enum: ["admin", "branch manager", "city manager", "donor"],
-  //   lowercase: true,
-  // },
   { timestamps: true }
 );
 

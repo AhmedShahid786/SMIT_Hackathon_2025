@@ -10,6 +10,9 @@ import { errorHandler } from "./middlewares/error.middlewares.js";
 
 //? Import routers
 import userRouter from "./routes/user.routes.js";
+import beneficiaryRouter from "./routes/beneficiary.routes.js";
+import tokenRouter from "./routes/token.routes.js";
+import actionRouter from "./routes/action.routes.js";
 
 //? Initialize express app
 const app = express();
@@ -39,6 +42,9 @@ app.use(
 );
 
 app.use("/users", userRouter);
+app.use("/beneficiaries", beneficiaryRouter);
+app.use("/tokens", tokenRouter);
+app.use("/actions", actionRouter);
 
 //? Error handler
 app.use(errorHandler);

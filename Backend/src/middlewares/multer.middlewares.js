@@ -20,18 +20,7 @@ const fileFilter = (req, file, cb) => {
 
   if (!file && fieldName !== "editedImage") {
     //* If the req does not contain a file, throw an error
-    cb(
-      new Error(
-        `${
-          fieldName === "profileImg"
-            ? "Profile image"
-            : fieldName === "image"
-              ? "Meal image"
-              : "Image"
-        } is required`
-      ),
-      false
-    );
+    cb(new Error(`Image is required`), false);
   } else if (allowedMimeTypes.includes(file.mimetype)) {
     //* Accept the file and proceed
     cb(null, true);

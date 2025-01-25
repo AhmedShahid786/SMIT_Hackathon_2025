@@ -24,16 +24,17 @@ export const authenticateUser = (allowedRoles) => async (req, res, next) => {
 
     //* Find the user in database using the id from decoded data
     const user = await userModel.findById(decodedData._id).lean();
-    // if (user.branch) user.branch = user.branch.toString();
     //* If user does not exist, return an error response
     if (!user) return sendResponse(res, 404, null, false, "User not found.");
 
     // * Check access permission and reject or proceed the request based on access permission
-    // const accessAllowed = allowedRoles.find(
-    //   (role) => role.toLowerCase() === user.role.toLowerCase()
-    // );
-    // if (!accessAllowed)
-    //   return sendResponse(res, 403, null, false, "Access denied.");
+    if (allowedRoles) {
+      const accessAllowed = allowedRoles.find(
+        (role) => role.toLowerCase() === user.role.toLowerCase()
+      );
+      if (!accessAllowed)
+        return sendResponse(res, 403, null, false, "Access denied.");
+    }
     req.user = user;
     next();
   } catch (err) {
