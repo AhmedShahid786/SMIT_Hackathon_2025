@@ -17,17 +17,17 @@ const router = Router();
 //? Route for fetching all users data
 router.get("/", authenticateUser(), asyncHandler(getUsers));
 
-//? Route for fetching single user's data using userId
-router.get(":/id", authenticateUser(), asyncHandler(getSingleUser));
-
 //? Route for fetching single user data using JWT Token
 router.get("/cookie", authenticateUser(), asyncHandler(getTokenUser));
+
+//? Route for fetching single user's data using userId
+router.get("/:id", authenticateUser(), asyncHandler(getSingleUser));
 
 //? Route for registering a new user
 router.post(
   "/register",
   upload.single("profileImg"),
-  authenticateUser(),
+  // authenticateUser(),
   asyncHandler(registerUser)
 );
 

@@ -19,7 +19,7 @@ export const uploadOnCloudinary = async (localFilePath) => {
     //* Upload file on cloudinary using file's local path created by multer
     const uploadRes = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
-      folder: "Home/Hackathon",
+      folder: "Hackathon",
     });
 
     //* Log the url to console

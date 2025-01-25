@@ -61,48 +61,59 @@ const getTokenUser = async (req, res) => {
 
 //? Add a new user
 const registerUser = async (req, res) => {
-  //* Validate the request data using Joi schema
-  const { error, value } = registerSchema.validate(req.body);
+  try {
+    //* Validate the request data using Joi schema
+    const { error, value } = registerSchema.validate(req.body);
 
-  //* If validation fails, return an error response
-  if (error) return sendResponse(res, 400, null, false, error.message);
+    //* If validation fails, return an error response
+    if (error) return sendResponse(res, 400, null, false, error.message);
 
-  //* Check if the user already exists in database
-  const existingUser = await userModel.findOne({ email: value.email });
+    //* Check if the user already exists in database
+    const existingUser = await userModel.findOne({ email: value.email });
 
-  //* If user already exists in database, return an error response
-  if (existingUser)
+    //* If user already exists in database, return an error response
+    if (existingUser)
+      return sendResponse(
+        res,
+        403,
+        null,
+        false,
+        "User with this email already exists."
+      );
+
+    // //* Check if city manager is trying to add an admin or city manager, return an error response
+    // if (
+    //   req.user.role === "city manager" &&
+    //   value.role.toLowerCase() !== "user manager"
+    // ) {
+    //   return sendResponse(res, 403, null, false, "Access denied.");
+    // }
+
+    //* Hash the password before saving to the database using bcrypt
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(value.password, saltRounds);
+    value.password = hashedPassword;
+
+    //* Upload the profile image to cloudinary
+    const profileImgUrl = await uploadOnCloudinary(req.file.path);
+    value.profileImg = profileImgUrl.url;
+
+    //* Save the new user to the database
+    let newUser = new userModel({ ...value });
+    newUser = await newUser.save();
+
+    //* Return success response with new-user data
     return sendResponse(
       res,
-      403,
-      null,
-      false,
-      "User with this email already exists."
+      201,
+      newUser,
+      true,
+      "User registered successfully."
     );
-
-  // //* Check if city manager is trying to add an admin or city manager, return an error response
-  // if (
-  //   req.user.role === "city manager" &&
-  //   value.role.toLowerCase() !== "user manager"
-  // ) {
-  //   return sendResponse(res, 403, null, false, "Access denied.");
-  // }
-
-  //* Hash the password before saving to the database using bcrypt
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(value.password, saltRounds);
-  value.password = hashedPassword;
-
-  //* Upload the profile image to cloudinary
-  const profileImgUrl = await uploadOnCloudinary(req.file.path);
-  value.profileImg = profileImgUrl.url;
-
-  //* Save the new user to the database
-  let newUser = new userModel({ ...value });
-  newUser = await newUser.save();
-
-  //* Return success response with new-user data
-  return sendResponse(res, 201, newUser, true, "User registered successfully.");
+  } catch (err) {
+    console.log("Error", err);
+    return sendResponse(res, 400, null, false, "Error registering user");
+  }
 };
 
 //? Login a user
