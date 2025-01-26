@@ -1,0 +1,8 @@
+[build]
+  base = "frontend"       # The folder where your Vite project is located
+  publish = "frontend/dist"  # The output folder where Vite builds your project (by default it's 'dist')
+  command = "npm run build"  # Command to build the Vite project
+
+[dev]
+  framework = "vite"       # Specifies the Vite framework for Netlify
+  autoLaunch = true  commit
