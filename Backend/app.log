@@ -101,3 +101,7 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/actions/add\",\"status\":\"404\",\"responseTime\":\"256.619\"}","timestamp":"2025-01-25T23:43:50.563Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/actions/add\",\"status\":\"201\",\"responseTime\":\"763.968\"}","timestamp":"2025-01-25T23:44:10.681Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/actions/67956fe9d63578a407582fcf\",\"status\":\"500\",\"responseTime\":\"283.328\"}","timestamp":"2025-01-25T23:44:37.697Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/actions/67956fe9d63578a407582fcf\",\"status\":\"200\",\"responseTime\":\"402.339\"}","timestamp":"2025-01-25T23:45:16.836Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PUT\",\"url\":\"/users/edit/6795662992d97c9248c9c481\",\"status\":\"201\",\"responseTime\":\"377.698\"}","timestamp":"2025-01-25T23:45:35.768Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PUT\",\"url\":\"/users/edit/6795662992d97c9248c9c481\",\"status\":\"201\",\"responseTime\":\"346.936\"}","timestamp":"2025-01-25T23:45:52.012Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PUT\",\"url\":\"/users/edit/6795662992d97c9248c9c481\",\"status\":\"201\",\"responseTime\":\"494.107\"}","timestamp":"2025-01-25T23:46:08.334Z"}

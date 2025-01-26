@@ -6,9 +6,17 @@ import { addAction, getActions } from "../controllers/action.controllers.js";
 const router = express.Router();
 
 //? Route for getting actions based on tokenId
-router.get("/:tokenId", authenticateUser(), asyncHandler(getActions));
+router.get(
+  "/:tokenId",
+  authenticateUser(["admin", "staff"]),
+  asyncHandler(getActions)
+);
 
 //? Route for adding a new action
-router.post("/add", authenticateUser(), asyncHandler(addAction));
+router.post(
+  "/add",
+  authenticateUser(["admin", "staff"]),
+  asyncHandler(addAction)
+);
 
 export default router;

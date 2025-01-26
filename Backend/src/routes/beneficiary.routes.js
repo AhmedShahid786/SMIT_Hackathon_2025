@@ -12,15 +12,19 @@ import { authenticateUser } from "../middlewares/authenticate.middlewares.js";
 const router = express.Router();
 
 //? Route for getting all beneficiaries
-router.get("/", authenticateUser(), asyncHandler(getBeneficiaries));
+router.get("/", authenticateUser(["admin"]), asyncHandler(getBeneficiaries));
 
 //? Route for getting a single beneficiary
-router.get("/single", authenticateUser(), asyncHandler(getSingleBeneficiary));
+router.get(
+  "/single",
+  authenticateUser(["admin", "receptionist"]),
+  asyncHandler(getSingleBeneficiary)
+);
 
 //? Route for adding a new beneficiary
 router.post(
   "/add",
-  authenticateUser(),
+  authenticateUser(["admin", "receptionist"]),
   upload.fields([
     { name: "image", maxCount: 1 },
     { name: "cnicImage.front", maxCount: 1 },
@@ -32,7 +36,7 @@ router.post(
 //? Route for editing an existing beneficiary
 router.put(
   "/edit/:id",
-  authenticateUser(),
+  authenticateUser(["admin", "receptionist"]),
   upload.fields([
     { name: "image", maxCount: 1 },
     { name: "cnicImage.front", maxCount: 1 },

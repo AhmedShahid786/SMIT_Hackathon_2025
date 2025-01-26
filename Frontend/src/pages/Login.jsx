@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
@@ -12,11 +11,9 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../utils/schemas";
 
-// Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -119,22 +116,6 @@ export default function Login() {
             <Button type="submit" fullWidth variant="contained">
               Sign in
             </Button>
-            <Link
-              href="/forgot-password"
-              variant="body2"
-              sx={{ alignSelf: "center" }}
-            >
-              Forgot your password?
-            </Link>
-          </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
-              <Link href="/signup" variant="body2" sx={{ alignSelf: "center" }}>
-                Sign up
-              </Link>
-            </Typography>
           </Box>
         </Card>
       </SignInContainer>

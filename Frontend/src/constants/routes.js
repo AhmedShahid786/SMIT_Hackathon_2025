@@ -1,4 +1,4 @@
-const dev = "http://192.168.100.4:4000";
+const dev = "http://192.168.5.230:4000";
 // const prod = "https://smit-hackathon-2025.onrender.com";
 
 const baseUrl = dev;
