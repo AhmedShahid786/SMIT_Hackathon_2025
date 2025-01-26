@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Login from "./pages/Login";
 import "./App.css";
-import Home from "./pages/Home";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
+import Receptionist from "./pages/Receptionist";
 
 function App() {
   return (
@@ -11,14 +11,9 @@ function App() {
       <AuthContextProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/receptionist" element={<Receptionist />} />
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>

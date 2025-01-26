@@ -7,4 +7,5 @@ export const routes = {
   register: baseUrl + "/users/register",
   login: baseUrl + "/users/login",
   userInfo: baseUrl + "/users/cookie",
+  addBeneficiary: baseUrl + "/beneficiaries/add",
 };

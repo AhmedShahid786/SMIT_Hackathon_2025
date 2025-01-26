@@ -1,7 +1,8 @@
 //? Import libraries and dependencies
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { createContext, useEffect, useState } from "react";
+import { routes } from "../constants/routes";
 
 //? Create context for auth
 export const AuthContext = createContext();
@@ -14,7 +15,7 @@ export function AuthContextProvider({ children }) {
   const [loadingUser, setLoadingUser] = useState(true);
 
   const fetchToken = async () => {
-    const storedToken = Cookies.get("token");
+    const storedToken = await Cookies.get("token");
     setToken(storedToken);
   };
 
