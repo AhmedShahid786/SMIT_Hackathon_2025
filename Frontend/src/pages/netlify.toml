@@ -1,6 +1,6 @@
 [build]
   base = "Frontend"       # The folder where your Vite project is located
-  publish = "Frontendcommit/dist"  # The output folder where Vite builds your project (by default it's 'dist')
+  publish = "Frontend/dist"  # The output folder where Vite builds your project (by default it's 'dist')
   command = "npm run build"  # Command to build the Vite project
 
 [dev]
